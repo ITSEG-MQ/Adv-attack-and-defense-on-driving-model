@@ -29,7 +29,7 @@ import os
 from advGAN_attack import advGAN_Attack
 
 
-def test_on_file(net, model_name, attack, test_dataset, device):
+def exp(net, model_name, attack, test_dataset, device):
     original_net = None
     image_size = (128, 128)
     if model_name == 'baseline':
@@ -312,28 +312,12 @@ def fgsm_attack_(model, image, target, device, epsilon=0.01, image_size=(128, 12
     return perturbed_image
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser(description='Model training.')
-    # parser.add_argument("--model_name", type=str, default="baseline")
-    # parser.add_argument("--root_dir", type=str)
-    # parser.add_argument("--adv_root_dir", type=str)
-    # parser.add_argument("--batch_size", type=int, default=32)
-    # parser.add_argument("--epochs", type=int)
-    # parser.add_argument("--train", type=int, default=1)
-    # parser.add_argument("--lr", type=float, default=0.0001)
-    # args = parser.parse_args()
-
-    # model_name = args.model_name
-    camera = 'center'
-    # batch_size = args.batch_size
-    # lr = args.lr
-    # epochs = args.epochs
-
-    # train = args.train
     batch_size = 32
     lr = 0.0001
     epochs = 15
-    train = 0
-    test = 1
+    # train all models 
+    train = 1
+    test = 0
     resized_image_height = 128
     resized_image_width = 128
     image_size=(resized_image_width, resized_image_height)
@@ -341,7 +325,7 @@ if __name__ == "__main__":
     # adv_dataset_path = args.adv_root_dir
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # models_name = ['baseline', 'nvidia', 'vgg16']
-    models_name = ['nvidia','vgg16']
+    models_name = ['baseline','nvidia','vgg16']
 
     adv_datasets = '../udacity-data/adv_data'
     #attacks = [ 'universal_attack',  'advGAN_universal_attack']
@@ -365,7 +349,7 @@ if __name__ == "__main__":
         net = net.to(device)
         net.eval()
         #test_on_gen(net, 'baseline', dataset_path, 'fgsm', device)
-        test_on_file(net, 'vgg16', 'fgsm_attack', test_dataset, device)
+        exp(net, 'vgg16', 'fgsm_attack', test_dataset, device)
     if train:
         full_indices = list(range(5614))
         test_indices = list(np.random.choice(5614, int(0.2*5614), replace=False))
@@ -388,6 +372,9 @@ if __name__ == "__main__":
             for attack in attacks:
                 print(model_name, attack)
                 adv_dataset_path = adv_datasets + '/' + model_name + '/' + attack
+            
+                if not os.path.exists(adv_dataset_path):
+                    os.mkdir(adv_dataset_path)
                 advt_model = model_name + '_' + attack
                 if train != 0:
                     if train == 2:
@@ -395,8 +382,6 @@ if __name__ == "__main__":
                         #net.load_state_dict(torch.load(model_name + '.pt'))
                     
                     else:
-
-
                         composed = transforms.Compose([Rescale(image_size), RandFlip(), RandRotation(),  Preprocess(model_name), ToTensor()])
                         dataset = UdacityDataset(dataset_path, ['HMB1', 'HMB2', 'HMB4', 'HMB5','HMB6'], composed)
 
@@ -519,4 +504,4 @@ if __name__ == "__main__":
                 torch.save(advGAN_uni.netG.state_dict(), './models/' + advt_model + '_universal_netG_epoch_60.pth')
                 print('Finish advGAN_uni training')
 
-                test_on_file(net, model_name, attack, test_dataset, device)
+                exp(net, model_name, attack, test_dataset, device)

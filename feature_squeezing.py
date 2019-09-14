@@ -192,15 +192,15 @@ def cal_detection_rate():
         attack_detection(model_name, net, test_data_loader, attack='opt', threshold=0.01)
 
 if __name__ == "__main__":
-    plot_figure()
+    # plot_figure()
 
         # print()
         # print('threshold', 0.01)
-        # attack_detection(model_name, net, test_data_loader, attack='fgsm', threshold=0.01)
-        # attack_detection(model_name, net, test_data_loader, attack='advGAN', threshold=0.01)
-        # attack_detection(model_name, net, test_data_loader, attack='advGAN_uni', threshold=0.01)
-        # attack_detection(model_name, net, test_data_loader, attack='opt_uni', threshold=0.01)
-        # attack_detection(model_name, net, test_data_loader, attack='opt', threshold=0.01)
+    attack_detection(model_name, net, test_data_loader, attack='fgsm', threshold=0.01)
+    attack_detection(model_name, net, test_data_loader, attack='advGAN', threshold=0.01)
+    attack_detection(model_name, net, test_data_loader, attack='advGAN_uni', threshold=0.01)
+    attack_detection(model_name, net, test_data_loader, attack='opt_uni', threshold=0.01)
+    attack_detection(model_name, net, test_data_loader, attack='opt', threshold=0.01)
 
             # print(net(squeeze_perturbed_image))
             # plt.figure()
