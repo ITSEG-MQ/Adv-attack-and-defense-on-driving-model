@@ -1,6 +1,10 @@
 # Adv-attack-and-defense-on-driving-model
 
-**This code is for PERCOM 2020 paper [An Analysis of Adversarial Attacks and Defenses on Autonomous Driving Models]()**
+**This code is for the paper [An Analysis of Adversarial Attacks and Defenses on Autonomous Driving Models]()**
+
+Here is an attack demo video of `opt_uni` and `advGAN` on `Epoch` model.
+
+
 
 <!-- Results on CNN/DailyMail (20/8/2019):
 
@@ -60,7 +64,7 @@
 
 **Package Requirements**: torch==1.1.0, torchvision==0.2.2,numpy, matplotlib, cv2, scipy
 
-**Experiment Enviroment**: We perform the experiment in the simulation environment with `Intel i7-8700 3.2GHz, 32GB of memory`, and a `NVIDIARTX 2080Ti GPU`.   
+**Experiment Enviroment**: We perform the experiment in the simulation environment with `Intel i7-8700 3.2GHz, 32GB of memory`, and a `NVIDIA RTX 2080Ti GPU`.   
 
 ## Dataset
 The dataset used in this project is [Udacity](https://github.com/udacity/self-driving-car/tree/master/datasets/CH2), which contains real-word condition images collected by a front camera installed in a vehicle. The training and testing dataset contains 33805 and 5614 frames, speriately. The steer angle of each frame is converted from a degree to a calue in the range (-1,1)
@@ -103,6 +107,17 @@ At first creat a new dir `../udacity-data/adv_data` to store the generated adver
 * **AdvGAN**: The implementation of this attack method is in the file `./advGAN_attack.py`, which is adapted from [advGAN_pytorch](https://github.com/mathcbc/advGAN_pytorch)
 
 * **AdvGAN_UNI**: The implementation of this attack method is in the file `./advGAN_attack.py`
+
+### Experiments
+* white-box attacks
+  ```
+  python experiment.py --experiment 1
+  ```
+
+* black-box attacks
+  ```
+  python experiment.py --experiment 2
+  ```
 
 
 ## Step3: Perform adversrial defence

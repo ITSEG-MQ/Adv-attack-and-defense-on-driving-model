@@ -23,6 +23,7 @@ from torch.utils.data import DataLoader
 from scipy.misc import imsave, imread
 import cv2
 import os
+import argparse
 
 """
 Experiment 1: test the total attack success rate of 5 attacks on 3 models 
@@ -89,27 +90,28 @@ def experiment_1():
         test_data_loader = torch.utils.data.DataLoader(full_dataset,batch_size=64,shuffle=False)
         num_sample = len(full_dataset)
         # universal perturbation generation
-        # if not os.path.exists(model_name + '_universal_attack_noise.npy'):
-        #     print('Start universal attack training')
-        #     perturbation = generate_noise(train_dataset, model, model_name, device, target)
-        #     np.save(model_name + '_universal_attack_noise', perturbation)
-        #     print('Finish universal attack training.')
+        if not os.path.exists(model_name + '_universal_attack_noise.npy'):
+            print('Start universal attack training')
+            perturbation = generate_noise(train_dataset, model, model_name, device, target)
+            np.save(model_name + '_universal_attack_noise', perturbation)
+            print('Finish universal attack training.')
 
         # # advGAN training
-        # if not os.path.exists('./models/' + model_name + '_netG_epoch_60.pth'):
-        # print('Start advGAN training')
-        # advGAN = advGAN_Attack(model_name, model_name + '.pt', target + 0.2, train_dataset)
-        # torch.save(advGAN.netG.state_dict(), './models/' + model_name +'_netG_epoch_60.pth')
-        # print('Finish advGAN training')
+        if not os.path.exists('./models/' + model_name + '_netG_epoch_60.pth'):
+            print('Start advGAN training')
+            advGAN = advGAN_Attack(model_name, model_name + '.pt', target + 0.2, train_dataset)
+            torch.save(advGAN.netG.state_dict(), './models/' + model_name +'_netG_epoch_60.pth')
+            print('Finish advGAN training')
 
         # # advGAN_uni training
-        # if not os.path.exists('./models/' + model_name + '_universal_netG_epoch_60.pth'):
-        # print('Start advGAN_uni training')
-        # advGAN_uni = advGAN_Attack(model_name, model_name + '.pt', target + 0.2, train_dataset, universal=True)
-        # advGAN_uni.save_noise_seed(model_name + '_noise_seed.npy')
+        if not os.path.exists('./models/' + model_name + '_universal_netG_epoch_60.pth'):
+            print('Start advGAN_uni training')
+            advGAN_uni = advGAN_Attack(model_name, model_name + '.pt', target + 0.2, train_dataset, universal=True)
+            advGAN_uni.save_noise_seed(model_name + '_noise_seed.npy')
 
-        # torch.save(advGAN_uni.netG.state_dict(), './models/' + model_name +'_universal_netG_epoch_60.pth')
-        print('Finish advGAN_uni training')
+            torch.save(advGAN_uni.netG.state_dict(), './models/' + model_name +'_universal_netG_epoch_60.pth')
+            print('Finish advGAN_uni training')
+
         print("Testing: " + model_name)
         #fgsm attack
         fgsm_ast, diff = fgsm_ex(test_data_loader, model, model_name, target, device, num_sample, image_size)
@@ -117,10 +119,10 @@ def experiment_1():
         fgsm_result.append(fgsm_ast)
         fgsm_diff.append(diff)
         # # optimization attack
-        # opt_ast, diff = opt_ex(test_dataset, model, model_name, target, device, num_sample, image_size)
-        # print(opt_ast)
-        # opt_result.append(opt_ast)
-        # opt_diff.append(diff)
+        opt_ast, diff = opt_ex(test_dataset, model, model_name, target, device, num_sample, image_size)
+        print(opt_ast)
+        opt_result.append(opt_ast)
+        opt_diff.append(diff)
         # optimized-based universal attack
         optu_ast, diff = opt_uni_ex(test_data_loader, model, model_name, target, device, num_sample, image_size)
         print(optu_ast)
@@ -134,8 +136,8 @@ def experiment_1():
         # advGAN_universal attack
         advGANU_ast, diff = advGAN_uni_ex(test_data_loader, model, model_name, target, device, num_sample, image_size)
         print(advGANU_ast)
-        # advGANU_result.append(advGANU_ast)
-        # advGANU_diff.append(diff)
+        advGANU_result.append(advGANU_ast)
+        advGANU_diff.append(diff)
 
     # print(fgsm_result)
     # print(opt_result)
@@ -639,8 +641,12 @@ def ex3_gen_adv(generator, gen_model, device):
                 np.save('../udacity-data/adv_testing/' + model_name + '/opt_attack/' + hmb + '/npy/' + 'batch_' + str(5614 // 64), npy)
 
 if __name__ == "__main__":
-    # experiment_1()
-    experiment_2()
+    parser = argparse.ArgumentParser(description='Experiments.')
+    parser.add_argument("--experiment", type=int, default=1)
+    if args.experiment == 1:
+        experiment_1()
+    elif args.experiment == 2:
+        experiment_2()
 
 
                 
