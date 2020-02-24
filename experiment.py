@@ -9,7 +9,7 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 from data import UdacityDataset, Rescale, Preprocess, ToTensor, AdvDataset
 from model import BaseCNN, Nvidia, build_vgg16, Vgg16
-from viewer import draw
+# from viewer import draw
 from scipy.misc import imresize
 from torchvision import datasets, transforms
 from fgsm_attack import fgsm_attack
@@ -643,6 +643,8 @@ def ex3_gen_adv(generator, gen_model, device):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Experiments.')
     parser.add_argument("--experiment", type=int, default=1)
+    args = parser.parse_args()
+
     if args.experiment == 1:
         experiment_1()
     elif args.experiment == 2:
