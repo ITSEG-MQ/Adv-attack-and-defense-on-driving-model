@@ -1,8 +1,8 @@
 # Adv-attack-and-defense-on-driving-model
 
-**This code is for the paper [An Analysis of Adversarial Attacks and Defenses on Autonomous Driving Models]()**
+**This code is for the paper [An Analysis of Adversarial Attacks and Defenses on Autonomous Driving Models]()** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3580012.svg)](https://doi.org/10.5281/zenodo.3580012)
 
-Here is an attack demo video of `opt_uni` and `advGAN` on `Epoch` model.
+[Here](https://youtu.be/jyT1mYVi6XA) is an attack demo video of `opt_uni` and `advGAN` on `Epoch` model.
 
 
 
