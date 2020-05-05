@@ -144,3 +144,21 @@ python feature_squeezing.py -- threshold 0.01
 ```
 * The implementation of this defence method is in the file `feature_squeezing.py`
 * The experiment result will show on the terminal
+
+## Citation
+If this work is helpful to your study, please cite as following:
+
+```
+@article{deng2020analysis,
+  author    = {Deng, Yao and Zheng, Xi and Zhang, Tianyi and Chen, Chen and Lou, Guannan and Kim, Miryung},
+  title     = {An Analysis of Adversarial Attacks and Defenses on Autonomous Driving Models},
+  journal   = {CoRR},
+  volume    = {abs/2002.02175},
+  year      = {2020}
+}
+```
+
+```
+Yao Deng, Xi Zheng, Tianyi Zhang, Chen Chen, Guannan Lou, and Miryung Kim. An analysis of adversarial attacks and defenses  on autonomous driving models. CoRR, abs/2002.02175, 2020.
+```
+
